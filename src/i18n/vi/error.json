@@ -1,0 +1,10 @@
+{
+  "NOT_FOUND": "Không tìm thấy tài nguyên yêu cầu.",
+  "CONFLICT": "Tài nguyên đã tồn tại.",
+  "INTERNAL": "Đã xảy ra lỗi không mong muốn.",
+  "VALIDATION": "Dữ liệu yêu cầu không hợp lệ.",
+  "BAD_REQUEST": "Yêu cầu không hợp lệ.",
+  "DATABASE": "Đã xảy ra lỗi cơ sở dữ liệu.",
+  "UNAUTHORIZED": "Yêu cầu xác thực.",
+  "FORBIDDEN": "Bạn không có quyền thực hiện hành động này."
+}

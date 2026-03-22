@@ -1,0 +1,10 @@
+{
+  "NOT_FOUND": "The requested resource was not found.",
+  "CONFLICT": "The resource already exists.",
+  "INTERNAL": "An unexpected error occurred.",
+  "VALIDATION": "The request data is invalid.",
+  "BAD_REQUEST": "The request is invalid.",
+  "DATABASE": "A database error occurred.",
+  "UNAUTHORIZED": "Authentication is required.",
+  "FORBIDDEN": "You do not have permission to perform this action."
+}
