@@ -149,6 +149,27 @@ export const PLAYER_STATUS = {
 - **Avoid mutation** — prefer returning new values over mutating inputs.
 - **Workflow readability** — method names should read like a workflow: `registerPlayer`, `recordMatch`, `calculateRanking`.
 - **Column names** in the database use `snake_case`; TypeScript properties mirror them exactly.
+- **Variables and function parameters** use `camelCase` in TypeScript code (e.g. `courtTotal`, `subsidyUsed`, `totalInternal`).
+
+## API Key Convention
+
+All API input (request body / query params) and output (response JSON) keys must be `snake_case` — this applies to DTOs, response interfaces, and any plain objects returned through `ResponseHelper`. `camelCase` is only for internal TypeScript variables and function parameters; it must never appear as a JSON key in the API contract.
+
+```ts
+// CORRECT — snake_case keys on the wire
+return ResponseHelper.ok({
+  user_snapshots: userSnapshots,
+  total_cost: calculation.total_cost,
+});
+
+// WRONG — camelCase leaks into the JSON response
+return ResponseHelper.ok({
+  userSnapshots,              // ❌
+  totalCost: calculation.totalCost,  // ❌
+});
+```
+
+This rule also applies to pure internal types (e.g. calculation engine result types) when those types are directly included in a response — their fields must be `snake_case`.
 
 ## Environment Variables
 

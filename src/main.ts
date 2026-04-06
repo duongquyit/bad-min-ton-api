@@ -2,6 +2,7 @@ import 'dotenv/config';
 import helmet from 'helmet';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './modules/app.module';
 import { Database } from './database/database';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';

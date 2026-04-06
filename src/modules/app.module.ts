@@ -9,6 +9,11 @@ import { AppService } from './app/app.service';
 import { HealthModule } from './health/health.module';
 import { HttpExceptionFilter } from '../common/exceptions/error-handler';
 import { setI18nInstance } from '../common/i18n';
+import { UsersModule } from './users/users.module';
+import { CourtsModule } from './courts/courts.module';
+import { ShuttlecocksModule } from './shuttlecocks/shuttlecocks.module';
+import { SubsidiesModule } from './subsidies/subsidies.module';
+import { SessionsModule } from './sessions/sessions.module';
 
 @Module({
   imports: [
@@ -23,6 +28,11 @@ import { setI18nInstance } from '../common/i18n';
       resolvers: [AcceptLanguageResolver],
     }),
     HealthModule,
+    UsersModule,
+    CourtsModule,
+    ShuttlecocksModule,
+    SubsidiesModule,
+    SessionsModule,
   ],
   controllers: [AppController],
   providers: [

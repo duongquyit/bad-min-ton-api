@@ -21,7 +21,9 @@
     "migrate:latest": "ts-node -r tsconfig-paths/register src/database/migrator.ts latest",
     "migrate:up": "ts-node -r tsconfig-paths/register src/database/migrator.ts up",
     "migrate:down": "ts-node -r tsconfig-paths/register src/database/migrator.ts down",
-    "migrate:list": "ts-node -r tsconfig-paths/register src/database/migrator.ts list"
+    "migrate:list": "ts-node -r tsconfig-paths/register src/database/migrator.ts list",
+    "seed": "ts-node -r tsconfig-paths/register src/database/seeder.ts run",
+    "seed:fresh": "ts-node -r tsconfig-paths/register src/database/seeder.ts fresh"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -75,6 +77,9 @@
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/src/$1"
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"

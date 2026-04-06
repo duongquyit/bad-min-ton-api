@@ -1,18 +1,12 @@
 import { Kysely, sql } from 'kysely';
 
-/**
- * Example migration — rename this file to <model>-<timestamp>.migration.ts
- * and replace the body of up/down with your schema changes.
- *
- * Generate a timestamp with: Date.now()
- */
-
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
-    .createTable('example')
-    .addColumn('id', 'uuid', (col) =>
-      col.primaryKey().defaultTo(sql`gen_random_uuid()`),
-    )
+    .createTable('users')
+    .addColumn('id', 'bigserial', (col) => col.primaryKey())
+    .addColumn('name', 'varchar(255)', (col) => col.notNull())
+    .addColumn('avatar_url', 'text')
+    .addColumn('type', 'int2', (col) => col.notNull().defaultTo(1))
     .addColumn('created_at', 'timestamptz', (col) =>
       col.notNull().defaultTo(sql`now()`),
     )
@@ -24,5 +18,5 @@ export async function up(db: Kysely<any>): Promise<void> {
 }
 
 export async function down(db: Kysely<any>): Promise<void> {
-  await db.schema.dropTable('example').execute();
+  await db.schema.dropTable('users').execute();
 }

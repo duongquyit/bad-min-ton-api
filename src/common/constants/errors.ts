@@ -1,0 +1,10 @@
+export const ERROR = {
+  NOT_FOUND: 'error.NOT_FOUND',
+  CONFLICT: 'error.CONFLICT',
+  BAD_REQUEST: 'error.BAD_REQUEST',
+  VALIDATION: 'error.VALIDATION',
+  UNAUTHORIZED: 'error.UNAUTHORIZED',
+  FORBIDDEN: 'error.FORBIDDEN',
+  DATABASE: 'error.DATABASE',
+  INTERNAL: 'error.INTERNAL',
+} as const;

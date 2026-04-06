@@ -15,43 +15,43 @@ export class AppException extends HttpException {
 }
 
 export class BadRequestException extends AppException {
-  constructor() {
-    super('error.BAD_REQUEST', HttpStatus.BAD_REQUEST);
+  constructor(errorCode = 'error.BAD_REQUEST') {
+    super(errorCode, HttpStatus.BAD_REQUEST);
   }
 }
 
 export class ValidationException extends AppException {
-  constructor() {
-    super('error.VALIDATION', HttpStatus.UNPROCESSABLE_ENTITY);
+  constructor(errorCode = 'error.VALIDATION') {
+    super(errorCode, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 }
 
 export class ResourceNotFoundException extends AppException {
-  constructor() {
-    super('error.NOT_FOUND', HttpStatus.NOT_FOUND);
+  constructor(errorCode = 'error.NOT_FOUND') {
+    super(errorCode, HttpStatus.NOT_FOUND);
   }
 }
 
 export class ResourceConflictException extends AppException {
-  constructor() {
-    super('error.CONFLICT', HttpStatus.CONFLICT);
+  constructor(errorCode = 'error.CONFLICT') {
+    super(errorCode, HttpStatus.CONFLICT);
   }
 }
 
 export class UnauthorizedException extends AppException {
-  constructor() {
-    super('error.UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
+  constructor(errorCode = 'error.UNAUTHORIZED') {
+    super(errorCode, HttpStatus.UNAUTHORIZED);
   }
 }
 
 export class ForbiddenException extends AppException {
-  constructor() {
-    super('error.FORBIDDEN', HttpStatus.FORBIDDEN);
+  constructor(errorCode = 'error.FORBIDDEN') {
+    super(errorCode, HttpStatus.FORBIDDEN);
   }
 }
 
 export class DatabaseException extends AppException {
-  constructor() {
-    super('error.DATABASE', HttpStatus.INTERNAL_SERVER_ERROR);
+  constructor(errorCode = 'error.DATABASE') {
+    super(errorCode, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

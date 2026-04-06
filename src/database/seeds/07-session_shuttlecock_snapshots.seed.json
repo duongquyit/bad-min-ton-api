@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "session_id": 1,
+    "shuttlecock_id": 1,
+    "shuttlecock_name_snapshot": "LêQuang 43",
+    "unit_price_snapshot": 270000,
+    "quantity": 2,
+    "total_amount": 540000
+  },
+  {
+    "id": 2,
+    "session_id": 2,
+    "shuttlecock_id": 2,
+    "shuttlecock_name_snapshot": "LêQuang 86",
+    "unit_price_snapshot": 290000,
+    "quantity": 3,
+    "total_amount": 870000
+  }
+]

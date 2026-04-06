@@ -1,0 +1,4 @@
+[
+  { "id": 1, "subsidy_id": 3, "session_id": 1, "amount": 400000 },
+  { "id": 2, "subsidy_id": 2, "session_id": 2, "amount": 400000 }
+]

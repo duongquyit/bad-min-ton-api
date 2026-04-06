@@ -1,0 +1,4 @@
+[
+  { "id": 1, "name": "An đồn 5.5", "description": "Indoor court on floor 1", "price": 90000 },
+  { "id": 2, "name": "Pinpon", "description": "Indoor court on floor 2", "price": 80000 }
+]

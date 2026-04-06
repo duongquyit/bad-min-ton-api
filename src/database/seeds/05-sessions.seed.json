@@ -1,0 +1,5 @@
+[
+  { "id": 1, "session_date": "2026-03-01", "court_id": 1, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 2, "session_date": "2026-02-15", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 3, "session_date": "2026-03-08", "court_id": 1, "duration_hours": 1.5, "status": 1, "is_scheduled": true }
+]

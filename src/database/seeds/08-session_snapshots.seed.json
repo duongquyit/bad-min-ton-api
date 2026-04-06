@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "session_id": 1,
+    "total_participants": 8,
+    "total_internal": 8,
+    "total_guest": 0,
+    "court_id_snapshot": 1,
+    "court_name_snapshot": "An đồn 5.5",
+    "court_price_snapshot": 90000,
+    "shuttlecock_total_amount": 540000,
+    "other_cost": 0,
+    "total_cost": 720000,
+    "subsidy_used": 400000,
+    "subsidy_remaining_after": 0,
+    "cost_strategy": 1,
+    "calculation_metadata": {
+      "strategy": 1,
+      "totalParticipants": 8,
+      "internalCount": 8,
+      "guestCount": 0,
+      "totalWeight": 8
+    },
+    "note": "Regular Saturday session"
+  },
+  {
+    "id": 2,
+    "session_id": 2,
+    "total_participants": 8,
+    "total_internal": 7,
+    "total_guest": 1,
+    "court_id_snapshot": 2,
+    "court_name_snapshot": "Pinpon",
+    "court_price_snapshot": 80000,
+    "shuttlecock_total_amount": 870000,
+    "other_cost": 0,
+    "total_cost": 1030000,
+    "subsidy_used": 400000,
+    "subsidy_remaining_after": 0,
+    "cost_strategy": 1,
+    "calculation_metadata": {
+      "strategy": 1,
+      "totalParticipants": 8,
+      "internalCount": 7,
+      "guestCount": 1,
+      "totalWeight": 8
+    },
+    "note": "Sunday session with guest"
+  }
+]
