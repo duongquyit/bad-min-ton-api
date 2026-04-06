@@ -6,6 +6,6 @@ import { ShuttlecocksService } from './shuttlecocks.service';
 @Module({
   controllers: [ShuttlecocksController],
   providers: [ShuttlecocksService, ShuttlecocksRepository],
-  exports: [ShuttlecocksRepository],
+  exports: [ShuttlecocksService],
 })
 export class ShuttlecocksModule {}

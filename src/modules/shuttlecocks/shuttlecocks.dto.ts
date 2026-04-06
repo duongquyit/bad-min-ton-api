@@ -10,6 +10,11 @@ export class CreateShuttlecockDto {
   price: number;
 
   @IsOptional()
+  @IsInt()
+  @Min(1)
+  quantity?: number;
+
+  @IsOptional()
   @IsString()
   description?: string;
 }
@@ -23,6 +28,11 @@ export class UpdateShuttlecockDto {
   @IsInt()
   @Min(1)
   price?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  quantity?: number;
 
   @IsOptional()
   @IsString()

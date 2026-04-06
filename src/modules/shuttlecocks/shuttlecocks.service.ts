@@ -23,6 +23,7 @@ export class ShuttlecocksService {
     return this.shuttlecocksRepo.create({
       name: dto.name,
       price: dto.price,
+      quantity: dto.quantity,
       description: dto.description ?? null,
     });
   }

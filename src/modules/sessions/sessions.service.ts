@@ -5,10 +5,10 @@ import {
   ResourceNotFoundException,
 } from 'src/common/exceptions/app.exception';
 import { PaginationHelper, PaginationMeta } from 'src/common/helpers/pagination.helper';
-import { CourtsRepository } from 'src/modules/courts/courts.repository';
-import { SubsidiesRepository } from 'src/modules/subsidies/subsidies.repository';
-import { SubsidyUsagesRepository } from 'src/modules/subsidies/subsidy-usages.repository';
-import { UsersRepository } from 'src/modules/users/users.repository';
+import { CourtsService } from 'src/modules/courts/courts.service';
+import { SubsidiesService } from 'src/modules/subsidies/subsidies.service';
+import { UsersService } from 'src/modules/users/users.service';
+import { ShuttlecocksService } from 'src/modules/shuttlecocks/shuttlecocks.service';
 import { CalculationEngine, CostStrategy, UserCostBreakdown } from 'src/core/calculation-engine/calculation-engine';
 import { SessionParticipantsRepository } from './session-participants.repository';
 import { SessionShuttlecockSnapshotsRepository } from './session-shuttlecock-snapshots.repository';
@@ -32,7 +32,6 @@ import {
   SessionsTable,
 } from './sessions.model';
 import { SessionsRepository } from './sessions.repository';
-import { ShuttlecocksRepository } from 'src/modules/shuttlecocks/shuttlecocks.repository';
 
 @Injectable()
 export class SessionsService {
@@ -42,11 +41,10 @@ export class SessionsService {
     private readonly shuttlecockSnapshotsRepo: SessionShuttlecockSnapshotsRepository,
     private readonly sessionSnapshotsRepo: SessionSnapshotsRepository,
     private readonly sessionUserSnapshotsRepo: SessionUserSnapshotsRepository,
-    private readonly courtsRepo: CourtsRepository,
-    private readonly subsidiesRepo: SubsidiesRepository,
-    private readonly subsidyUsagesRepo: SubsidyUsagesRepository,
-    private readonly usersRepo: UsersRepository,
-    private readonly shuttlecocksRepo: ShuttlecocksRepository,
+    private readonly courtsService: CourtsService,
+    private readonly subsidiesService: SubsidiesService,
+    private readonly usersService: UsersService,
+    private readonly shuttlecocksService: ShuttlecocksService,
   ) {}
 
   // ─── Sessions CRUD ──────────────────────────────────────────────────────────
@@ -151,8 +149,7 @@ export class SessionsService {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertDraft(session);
 
-    const user = await this.usersRepo.findById(dto.user_id);
-    if (!user) throw new ResourceNotFoundException();
+    const user = await this.usersService.findById(dto.user_id);
 
     return this.participantsRepo.addParticipant(sessionId, dto.user_id, user.type);
   }
@@ -177,8 +174,7 @@ export class SessionsService {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertDraft(session);
 
-    const shuttlecock = await this.shuttlecocksRepo.findById(dto.shuttlecock_id);
-    if (!shuttlecock) throw new ResourceNotFoundException();
+    const shuttlecock = await this.shuttlecocksService.findById(dto.shuttlecock_id);
 
     return this.shuttlecockSnapshotsRepo.create({
       session_id: sessionId,
@@ -186,7 +182,7 @@ export class SessionsService {
       shuttlecock_name_snapshot: shuttlecock.name,
       unit_price_snapshot: shuttlecock.price,
       quantity: dto.quantity,
-      total_amount: Math.round((shuttlecock.price / 12) * dto.quantity),
+      total_amount: Math.round((shuttlecock.price / shuttlecock.quantity) * dto.quantity),
     });
   }
 
@@ -203,7 +199,7 @@ export class SessionsService {
 
     const updatedUsage = await this.shuttlecockSnapshotsRepo.update(snapshotId, {
       quantity: dto.quantity,
-      total_amount: Math.round((shuttlecockUsage.unit_price_snapshot / 12) * dto.quantity),
+      total_amount: Math.round((shuttlecockUsage.unit_price_snapshot / shuttlecockUsage.quantity) * dto.quantity),
     });
     if (!updatedUsage) throw new ResourceNotFoundException();
     return updatedUsage;
@@ -230,14 +226,14 @@ export class SessionsService {
 
     const [shuttlecockSnapshots, court] = await Promise.all([
       this.shuttlecockSnapshotsRepo.findBy('session_id', sessionId),
-      session.court_id ? this.courtsRepo.findById(session.court_id) : Promise.resolve(null),
+      session.court_id ? this.courtsService.findByIdOptional(session.court_id) : Promise.resolve(null),
     ]);
 
     const courtRentalCost = (court?.price ?? 0) * Number(session.duration_hours);
     const shuttlecockTotal = shuttlecockSnapshots.reduce((sum, s) => sum + s.total_amount, 0);
     const sessionMonth = toMonthString(session.session_date);
 
-    const subsidy = await this.subsidiesRepo.findByMonth(sessionMonth);
+    const subsidy = await this.subsidiesService.findByMonthOptional(sessionMonth);
     const subsidyAvailable = subsidy ? subsidy.total_amount - subsidy.used_amount : 0;
 
     const calculation = CalculationEngine.calculate({
@@ -294,18 +290,11 @@ export class SessionsService {
       }
 
       if (calculation.subsidy_used > 0 && subsidy) {
-        await this.subsidyUsagesRepo.create(
-          {
-            subsidy_id: subsidy.id,
-            session_id: sessionId,
-            amount: calculation.subsidy_used,
-          },
-          { trx },
-        );
-
-        await this.subsidiesRepo.update(
+        await this.subsidiesService.recordUsage(
           subsidy.id,
-          { used_amount: subsidy.used_amount + calculation.subsidy_used },
+          sessionId,
+          calculation.subsidy_used,
+          subsidy.used_amount,
           { trx },
         );
       }

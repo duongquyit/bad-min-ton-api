@@ -44,6 +44,7 @@ export interface ShuttlecocksTable {
   name: string;
   description: string | null;
   price: number;
+  quantity: DefaultableNumber;
   created_at: Generated<Date>;
   updated_at: UpdateableTimestamp;
   deleted_at: SoftDeleteTimestamp;

@@ -5,13 +5,18 @@ import {
   ResourceNotFoundException,
 } from 'src/common/exceptions/app.exception';
 import { PaginationHelper, PaginationMeta } from 'src/common/helpers/pagination.helper';
+import { WriteOptions } from 'src/database/base.repository';
 import { CreateSubsidyDto, ListSubsidiesQueryDto, UpdateSubsidyDto } from './subsidies.dto';
 import { SubsidiesTable } from './subsidies.model';
 import { SubsidiesRepository } from './subsidies.repository';
+import { SubsidyUsagesRepository } from './subsidy-usages.repository';
 
 @Injectable()
 export class SubsidiesService {
-  constructor(private readonly subsidiesRepo: SubsidiesRepository) {}
+  constructor(
+    private readonly subsidiesRepo: SubsidiesRepository,
+    private readonly subsidyUsagesRepo: SubsidyUsagesRepository,
+  ) {}
 
   async list({ page, limit }: ListSubsidiesQueryDto): Promise<{ items: Selectable<SubsidiesTable>[]; pagination: PaginationMeta }> {
     const offset = PaginationHelper.toOffset(page, limit);
@@ -46,5 +51,23 @@ export class SubsidiesService {
     const subsidy = await this.subsidiesRepo.update(id, { total_amount: dto.total_amount });
     if (!subsidy) throw new ResourceNotFoundException();
     return subsidy;
+  }
+
+  async findByMonthOptional(month: string): Promise<Selectable<SubsidiesTable> | undefined> {
+    return this.subsidiesRepo.findByMonth(month);
+  }
+
+  async recordUsage(
+    subsidyId: string,
+    sessionId: string,
+    amount: number,
+    currentUsedAmount: number,
+    options?: WriteOptions,
+  ): Promise<void> {
+    await this.subsidyUsagesRepo.create(
+      { subsidy_id: subsidyId, session_id: sessionId, amount },
+      options,
+    );
+    await this.subsidiesRepo.update(subsidyId, { used_amount: currentUsedAmount + amount }, options);
   }
 }

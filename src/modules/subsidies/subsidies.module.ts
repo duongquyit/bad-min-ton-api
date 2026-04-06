@@ -7,6 +7,6 @@ import { SubsidyUsagesRepository } from './subsidy-usages.repository';
 @Module({
   controllers: [SubsidiesController],
   providers: [SubsidiesService, SubsidiesRepository, SubsidyUsagesRepository],
-  exports: [SubsidiesRepository, SubsidyUsagesRepository],
+  exports: [SubsidiesService],
 })
 export class SubsidiesModule {}

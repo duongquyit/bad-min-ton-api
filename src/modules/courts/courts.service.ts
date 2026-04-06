@@ -31,6 +31,10 @@ export class CourtsService {
     return this.courtsRepo.findByIdOrThrow(id);
   }
 
+  async findByIdOptional(id: string): Promise<Selectable<CourtsTable> | undefined> {
+    return this.courtsRepo.findById(id);
+  }
+
   async update(id: string, dto: UpdateCourtDto): Promise<Selectable<CourtsTable>> {
     const court = await this.courtsRepo.update(id, dto);
     if (!court) throw new ResourceNotFoundException();

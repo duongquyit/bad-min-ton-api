@@ -45,6 +45,44 @@ NestJS REST API with PostgreSQL (via Kysely query builder).
 
 **Module structure** — `src/modules/app.module.ts` is the root module importing `ConfigModule` globally. Feature modules live under `src/modules/<feature>/`.
 
+## Cross-Module Dependency Rule
+
+**A service may only inject repositories that belong to its own domain.**
+
+To access data from another domain, inject that domain's **service** — never its repository directly.
+
+```ts
+// CORRECT — SessionsService needs user data → inject UsersService
+@Injectable()
+export class SessionsService {
+  constructor(
+    private readonly sessionsRepo: SessionsRepository,   // own domain ✓
+    private readonly usersService: UsersService,         // cross-domain via service ✓
+  ) {}
+}
+
+// WRONG — cross-domain repository injection
+@Injectable()
+export class SessionsService {
+  constructor(
+    private readonly sessionsRepo: SessionsRepository,
+    private readonly usersRepo: UsersRepository,   // ❌ foreign repository
+  ) {}
+}
+```
+
+When a cross-domain operation requires a capability the target service doesn't yet expose, add a new method to that service — do not reach into the repository directly.
+
+Module exports must expose the **service**, not the repository, so other modules can consume it:
+
+```ts
+@Module({
+  providers: [UsersService, UsersRepository],
+  exports: [UsersService],   // ✓ — export the service, not the repository
+})
+export class UsersModule {}
+```
+
 ## Module Structure
 
 Every feature follows this exact file pattern under `src/modules/<feature>/`:
