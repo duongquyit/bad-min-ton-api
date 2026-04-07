@@ -32,6 +32,26 @@ async function getSeedFiles(): Promise<string[]> {
   return files.filter((f) => f.endsWith(SEED_SUFFIX)).sort();
 }
 
+async function syncTableIdSequence(
+  db: Kysely<any>,
+  table: string,
+): Promise<void> {
+  const sequenceResult = await sql<{ sequence_name: string | null }>`
+    SELECT pg_get_serial_sequence(${table}, 'id') AS sequence_name
+  `.execute(db);
+
+  const sequenceName = sequenceResult.rows[0]?.sequence_name;
+  if (!sequenceName) return;
+
+  await sql`
+    SELECT setval(
+      ${sequenceName},
+      COALESCE((SELECT MAX(id) FROM ${sql.table(table)}), 1),
+      EXISTS(SELECT 1 FROM ${sql.table(table)})
+    )
+  `.execute(db);
+}
+
 async function runSeeds(db: Kysely<any>): Promise<void> {
   const files = await getSeedFiles();
 
@@ -54,6 +74,8 @@ async function runSeeds(db: Kysely<any>): Promise<void> {
           .values(rows)
           .onConflict((oc: any) => oc.doNothing())
           .execute();
+
+        await syncTableIdSequence(db, table);
       }
 
       console.log(`  ✓ ${name}`);

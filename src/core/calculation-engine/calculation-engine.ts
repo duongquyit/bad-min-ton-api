@@ -3,7 +3,7 @@ import { MANAGE_FEE } from 'src/modules/sessions/sessions.constants';
 export type CostStrategy = 1 | 2 | 3;
 
 export interface CalculationParticipant {
-  userId: string;
+  userId: number;
   typeSnapshot: number; // 1 = internal, 2 = guest
 }
 
@@ -17,7 +17,7 @@ export interface CalculationInput {
 }
 
 export interface UserCostResult {
-  user_id: string;
+  user_id: number;
   type_snapshot: number;
   cost_share: number;
   subsidy_share: number;
@@ -33,7 +33,7 @@ export interface CalculationResult {
 }
 
 export interface UserCostBreakdown {
-  user_id: string;
+  user_id: number;
   type_snapshot: number;
   court_cost_share: number;
   shuttlecock_cost_share: number;

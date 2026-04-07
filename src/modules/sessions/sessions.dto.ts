@@ -8,8 +8,9 @@ export class CreateSessionDto {
   session_date: string;
 
   @IsOptional()
-  @IsString()
-  court_id?: string;
+  @Type(() => Number)
+  @IsInt()
+  court_id?: number;
 
   @Type(() => Number)
   @IsNumber()
@@ -27,8 +28,9 @@ export class UpdateSessionDto {
   session_date?: string;
 
   @IsOptional()
-  @IsString()
-  court_id?: string;
+  @Type(() => Number)
+  @IsInt()
+  court_id?: number;
 
   @IsOptional()
   @Type(() => Number)
@@ -49,13 +51,15 @@ export class ListSessionsQueryDto extends PaginationQueryDto {
 }
 
 export class AddParticipantDto {
-  @IsString()
-  user_id: string;
+  @Type(() => Number)
+  @IsInt()
+  user_id: number;
 }
 
 export class AddShuttlecockUsageDto {
-  @IsString()
-  shuttlecock_id: string;
+  @Type(() => Number)
+  @IsInt()
+  shuttlecock_id: number;
 
   @IsInt()
   @Min(1)

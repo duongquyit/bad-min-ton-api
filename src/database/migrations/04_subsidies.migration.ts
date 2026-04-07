@@ -3,7 +3,7 @@ import { Kysely, sql } from 'kysely';
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('subsidies')
-    .addColumn('id', 'bigserial', (col) => col.primaryKey())
+    .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('month', 'date', (col) => col.notNull().unique())
     .addColumn('total_amount', 'integer', (col) =>
       col.notNull().defaultTo(2000000),

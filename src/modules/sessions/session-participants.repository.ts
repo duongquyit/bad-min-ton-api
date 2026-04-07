@@ -11,8 +11,8 @@ export class SessionParticipantsRepository extends BaseRepository<SessionPartici
   }
 
   async addParticipant(
-    sessionId: string,
-    userId: string,
+    sessionId: number,
+    userId: number,
     typeSnapshot: number,
   ): Promise<Selectable<SessionParticipantsTable>> {
     // Check for any existing record (active or soft-deleted) to handle unique constraint
@@ -40,7 +40,7 @@ export class SessionParticipantsRepository extends BaseRepository<SessionPartici
     return this.create({ session_id: sessionId, user_id: userId, type_snapshot: typeSnapshot });
   }
 
-  async removeParticipant(sessionId: string, userId: string): Promise<void> {
+  async removeParticipant(sessionId: number, userId: number): Promise<void> {
     await this.db
       .updateTable('session_participants')
       .set({ deleted_at: new Date() })

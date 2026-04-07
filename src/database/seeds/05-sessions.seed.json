@@ -1,5 +1,15 @@
 [
-  { "id": 1, "session_date": "2026-03-01", "court_id": 1, "duration_hours": 2, "status": 2, "is_scheduled": true },
-  { "id": 2, "session_date": "2026-02-15", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
-  { "id": 3, "session_date": "2026-03-08", "court_id": 1, "duration_hours": 1.5, "status": 1, "is_scheduled": true }
+  { "id": 1,  "session_date": "2026-03-02", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 2,  "session_date": "2026-03-04", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 3,  "session_date": "2026-03-06", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 4,  "session_date": "2026-03-09", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 5,  "session_date": "2026-03-11", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 6,  "session_date": "2026-03-13", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 7,  "session_date": "2026-03-16", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 8,  "session_date": "2026-03-18", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 9,  "session_date": "2026-03-20", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 10, "session_date": "2026-03-23", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 11, "session_date": "2026-03-25", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 12, "session_date": "2026-03-27", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true },
+  { "id": 13, "session_date": "2026-03-30", "court_id": 2, "duration_hours": 2, "status": 2, "is_scheduled": true }
 ]

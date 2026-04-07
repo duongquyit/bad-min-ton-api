@@ -3,14 +3,14 @@ import { Kysely, sql } from 'kysely';
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('session_snapshots')
-    .addColumn('id', 'bigserial', (col) => col.primaryKey())
-    .addColumn('session_id', 'bigint', (col) =>
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('session_id', 'integer', (col) =>
       col.notNull().unique().references('sessions.id'),
     )
     .addColumn('total_participants', 'integer', (col) => col.notNull())
     .addColumn('total_internal', 'integer', (col) => col.notNull())
     .addColumn('total_guest', 'integer', (col) => col.notNull())
-    .addColumn('court_id_snapshot', 'bigint')
+    .addColumn('court_id_snapshot', 'integer')
     .addColumn('court_name_snapshot', 'varchar(255)')
     .addColumn('court_price_snapshot', 'integer', (col) => col.notNull())
     .addColumn('shuttlecock_total_amount', 'integer', (col) => col.notNull())

@@ -1,5 +1,5 @@
 [
   { "id": 1, "month": "2026-01-01", "total_amount": 400000, "used_amount": 0 },
   { "id": 2, "month": "2026-02-01", "total_amount": 400000, "used_amount": 400000 },
-  { "id": 3, "month": "2026-03-01", "total_amount": 400000, "used_amount": 400000 }
+  { "id": 3, "month": "2026-03-01", "total_amount": 2000000, "used_amount": 1999994 }
 ]

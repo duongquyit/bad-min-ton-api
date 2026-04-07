@@ -33,17 +33,17 @@ export class UsersService {
     });
   }
 
-  async findById(id: string): Promise<Selectable<UsersTable>> {
+  async findById(id: number): Promise<Selectable<UsersTable>> {
     return this.usersRepo.findByIdOrThrow(id);
   }
 
-  async update(id: string, dto: UpdateUserDto): Promise<Selectable<UsersTable>> {
+  async update(id: number, dto: UpdateUserDto): Promise<Selectable<UsersTable>> {
     const user = await this.usersRepo.update(id, dto);
     if (!user) throw new ResourceNotFoundException();
     return user;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.usersRepo.findByIdOrThrow(id);
     await this.usersRepo.delete(id);
   }

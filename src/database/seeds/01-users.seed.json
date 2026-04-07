@@ -19,5 +19,6 @@
   { "id": 18, "name": "Tung Nguyen Xuan",        "avatar_url": null, "type": 1 },
   { "id": 19, "name": "Vu Tran Kim",             "avatar_url": null, "type": 1 },
   { "id": 20, "name": "Vy Huynh Thi Thao",       "avatar_url": null, "type": 1 },
-  { "id": 21, "name": "Chị Oanh",               "avatar_url": null, "type": 2 }
+  { "id": 21, "name": "Chị Oanh",               "avatar_url": null, "type": 2 },
+  { "id": 22, "name": "Thuong",                  "avatar_url": null, "type": 2 }
 ]

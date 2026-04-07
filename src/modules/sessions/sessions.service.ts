@@ -67,7 +67,7 @@ export class SessionsService {
     });
   }
 
-  async findById(id: string): Promise<SessionDetail> {
+  async findById(id: number): Promise<SessionDetail> {
     const session = await this.sessionsRepo.findByIdOrThrow(id);
     const [participants, shuttlecocks, snapshot] = await Promise.all([
       this.participantsRepo.findBy('session_id', id),
@@ -83,7 +83,7 @@ export class SessionsService {
     return { ...session, participants, shuttlecocks, snapshot: snapshot ?? null, user_snapshots: userSnapshots };
   }
 
-  async update(id: string, dto: UpdateSessionDto): Promise<Selectable<SessionsTable>> {
+  async update(id: number, dto: UpdateSessionDto): Promise<Selectable<SessionsTable>> {
     const session = await this.sessionsRepo.findByIdOrThrow(id);
     this.assertDraft(session);
     const updatedSession = await this.sessionsRepo.update(id, {
@@ -95,7 +95,7 @@ export class SessionsService {
     return updatedSession;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     const session = await this.sessionsRepo.findByIdOrThrow(id);
     this.assertDraft(session);
     await this.sessionsRepo.delete(id);
@@ -103,7 +103,7 @@ export class SessionsService {
 
   // ─── Participants ────────────────────────────────────────────────────────────
 
-  async listParticipants(sessionId: string): Promise<ParticipantWithBreakdown[]> {
+  async listParticipants(sessionId: number): Promise<ParticipantWithBreakdown[]> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     const participants = await this.participantsRepo.findBy('session_id', sessionId);
 
@@ -143,7 +143,7 @@ export class SessionsService {
   }
 
   async addParticipant(
-    sessionId: string,
+    sessionId: number,
     dto: AddParticipantDto,
   ): Promise<Selectable<SessionParticipantsTable>> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
@@ -154,7 +154,7 @@ export class SessionsService {
     return this.participantsRepo.addParticipant(sessionId, dto.user_id, user.type);
   }
 
-  async removeParticipant(sessionId: string, userId: string): Promise<void> {
+  async removeParticipant(sessionId: number, userId: number): Promise<void> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertDraft(session);
     await this.participantsRepo.removeParticipant(sessionId, userId);
@@ -162,13 +162,13 @@ export class SessionsService {
 
   // ─── Shuttlecock usage ───────────────────────────────────────────────────────
 
-  async listShuttlecockUsage(sessionId: string): Promise<Selectable<SessionShuttlecockSnapshotsTable>[]> {
+  async listShuttlecockUsage(sessionId: number): Promise<Selectable<SessionShuttlecockSnapshotsTable>[]> {
     await this.sessionsRepo.findByIdOrThrow(sessionId);
     return this.shuttlecockSnapshotsRepo.findBy('session_id', sessionId);
   }
 
   async addShuttlecockUsage(
-    sessionId: string,
+    sessionId: number,
     dto: AddShuttlecockUsageDto,
   ): Promise<Selectable<SessionShuttlecockSnapshotsTable>> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
@@ -187,8 +187,8 @@ export class SessionsService {
   }
 
   async updateShuttlecockUsage(
-    sessionId: string,
-    snapshotId: string,
+    sessionId: number,
+    snapshotId: number,
     dto: UpdateShuttlecockUsageDto,
   ): Promise<Selectable<SessionShuttlecockSnapshotsTable>> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
@@ -205,7 +205,7 @@ export class SessionsService {
     return updatedUsage;
   }
 
-  async removeShuttlecockUsage(sessionId: string, snapshotId: string): Promise<void> {
+  async removeShuttlecockUsage(sessionId: number, snapshotId: number): Promise<void> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertDraft(session);
 
@@ -217,7 +217,7 @@ export class SessionsService {
 
   // ─── Finalize ────────────────────────────────────────────────────────────────
 
-  async finalize(sessionId: string, dto: FinalizeSessionDto): Promise<FinalizeResult> {
+  async finalize(sessionId: number, dto: FinalizeSessionDto): Promise<FinalizeResult> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertDraft(session);
 
@@ -327,13 +327,13 @@ export class SessionsService {
 
   // ─── Payments ────────────────────────────────────────────────────────────────
 
-  async listPayments(sessionId: string): Promise<Selectable<SessionUserSnapshotsTable>[]> {
+  async listPayments(sessionId: number): Promise<Selectable<SessionUserSnapshotsTable>[]> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertFinalized(session);
     return this.sessionUserSnapshotsRepo.findBy('session_id', sessionId);
   }
 
-  async markAsPaid(sessionId: string, userId: string): Promise<Selectable<SessionUserSnapshotsTable>> {
+  async markAsPaid(sessionId: number, userId: number): Promise<Selectable<SessionUserSnapshotsTable>> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertFinalized(session);
 

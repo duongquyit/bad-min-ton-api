@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { ResponseHelper } from 'src/common/helpers/response.helper';
 import { CreateCourtDto, ListCourtsQueryDto, UpdateCourtDto } from './courts.dto';
 import { CourtsService } from './courts.service';
@@ -20,19 +20,19 @@ export class CourtsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     const court = await this.courtsService.findById(id);
     return ResponseHelper.ok(court);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateCourtDto) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCourtDto) {
     const court = await this.courtsService.update(id, dto);
     return ResponseHelper.ok(court);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     await this.courtsService.remove(id);
     return ResponseHelper.noContent();
   }

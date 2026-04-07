@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { ResponseHelper } from 'src/common/helpers/response.helper';
 import {
   AddParticipantDto,
@@ -30,19 +30,19 @@ export class SessionsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     const session = await this.sessionsService.findById(id);
     return ResponseHelper.ok(session);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateSessionDto) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateSessionDto) {
     const session = await this.sessionsService.update(id, dto);
     return ResponseHelper.ok(session);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     await this.sessionsService.remove(id);
     return ResponseHelper.noContent();
   }
@@ -50,7 +50,7 @@ export class SessionsController {
   // ─── Finalize ────────────────────────────────────────────────────────────────
 
   @Post(':id/finalize')
-  async finalize(@Param('id') id: string, @Body() dto: FinalizeSessionDto) {
+  async finalize(@Param('id', ParseIntPipe) id: number, @Body() dto: FinalizeSessionDto) {
     const result = await this.sessionsService.finalize(id, dto);
     return ResponseHelper.ok(result);
   }
@@ -58,19 +58,19 @@ export class SessionsController {
   // ─── Participants ────────────────────────────────────────────────────────────
 
   @Get(':id/participants')
-  async listParticipants(@Param('id') id: string) {
+  async listParticipants(@Param('id', ParseIntPipe) id: number) {
     const participants = await this.sessionsService.listParticipants(id);
     return ResponseHelper.ok(participants);
   }
 
   @Post(':id/participants')
-  async addParticipant(@Param('id') id: string, @Body() dto: AddParticipantDto) {
+  async addParticipant(@Param('id', ParseIntPipe) id: number, @Body() dto: AddParticipantDto) {
     const participant = await this.sessionsService.addParticipant(id, dto);
     return ResponseHelper.created(participant);
   }
 
   @Delete(':id/participants/:userId')
-  async removeParticipant(@Param('id') id: string, @Param('userId') userId: string) {
+  async removeParticipant(@Param('id', ParseIntPipe) id: number, @Param('userId', ParseIntPipe) userId: number) {
     await this.sessionsService.removeParticipant(id, userId);
     return ResponseHelper.noContent();
   }
@@ -78,21 +78,21 @@ export class SessionsController {
   // ─── Shuttlecock usage ───────────────────────────────────────────────────────
 
   @Get(':id/shuttlecocks')
-  async listShuttlecockUsage(@Param('id') id: string) {
+  async listShuttlecockUsage(@Param('id', ParseIntPipe) id: number) {
     const snapshots = await this.sessionsService.listShuttlecockUsage(id);
     return ResponseHelper.ok(snapshots);
   }
 
   @Post(':id/shuttlecocks')
-  async addShuttlecockUsage(@Param('id') id: string, @Body() dto: AddShuttlecockUsageDto) {
+  async addShuttlecockUsage(@Param('id', ParseIntPipe) id: number, @Body() dto: AddShuttlecockUsageDto) {
     const snapshot = await this.sessionsService.addShuttlecockUsage(id, dto);
     return ResponseHelper.created(snapshot);
   }
 
   @Patch(':id/shuttlecocks/:snapshotId')
   async updateShuttlecockUsage(
-    @Param('id') id: string,
-    @Param('snapshotId') snapshotId: string,
+    @Param('id', ParseIntPipe) id: number,
+    @Param('snapshotId', ParseIntPipe) snapshotId: number,
     @Body() dto: UpdateShuttlecockUsageDto,
   ) {
     const snapshot = await this.sessionsService.updateShuttlecockUsage(id, snapshotId, dto);
@@ -100,7 +100,7 @@ export class SessionsController {
   }
 
   @Delete(':id/shuttlecocks/:snapshotId')
-  async removeShuttlecockUsage(@Param('id') id: string, @Param('snapshotId') snapshotId: string) {
+  async removeShuttlecockUsage(@Param('id', ParseIntPipe) id: number, @Param('snapshotId', ParseIntPipe) snapshotId: number) {
     await this.sessionsService.removeShuttlecockUsage(id, snapshotId);
     return ResponseHelper.noContent();
   }
@@ -108,13 +108,13 @@ export class SessionsController {
   // ─── Payments ────────────────────────────────────────────────────────────────
 
   @Get(':id/payments')
-  async listPayments(@Param('id') id: string) {
+  async listPayments(@Param('id', ParseIntPipe) id: number) {
     const userSnapshots = await this.sessionsService.listPayments(id);
     return ResponseHelper.ok(userSnapshots);
   }
 
   @Patch(':id/payments/:userId')
-  async markAsPaid(@Param('id') id: string, @Param('userId') userId: string) {
+  async markAsPaid(@Param('id', ParseIntPipe) id: number, @Param('userId', ParseIntPipe) userId: number) {
     const userSnapshot = await this.sessionsService.markAsPaid(id, userId);
     return ResponseHelper.ok(userSnapshot);
   }

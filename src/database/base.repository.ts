@@ -66,7 +66,7 @@ export interface WriteOptions {
  *   });
  *
  * Assumptions:
- *   - All tables have an `id` UUID primary key column.
+ *   - All tables have an auto-increment numeric primary key column.
  *   - PostgreSQL dialect (RETURNING clause on insert / update).
  */
 export class BaseRepository<Model> {
@@ -222,7 +222,7 @@ export class BaseRepository<Model> {
     return row as unknown as Selectable<Model> | undefined;
   }
 
-  async findById(id: string): Promise<Selectable<Model> | undefined> {
+  async findById(id: number): Promise<Selectable<Model> | undefined> {
     let query = this.db
       .selectFrom(this.tableName)
       .selectAll()
@@ -254,7 +254,7 @@ export class BaseRepository<Model> {
   }
 
   /** Like `findById` but throws `ResourceNotFoundException` when the row is missing. */
-  async findByIdOrThrow(id: string): Promise<Selectable<Model>> {
+  async findByIdOrThrow(id: number): Promise<Selectable<Model>> {
     const row = await this.findById(id);
     if (!row) throw new ResourceNotFoundException();
     return row;
@@ -279,7 +279,7 @@ export class BaseRepository<Model> {
   }
 
   async update(
-    id: string,
+    id: number,
     data: Updateable<Model>,
     options?: WriteOptions,
   ): Promise<Selectable<Model> | undefined> {
@@ -296,7 +296,7 @@ export class BaseRepository<Model> {
     return row as Selectable<Model> | undefined;
   }
 
-  async delete(id: string, options?: WriteOptions): Promise<void> {
+  async delete(id: number, options?: WriteOptions): Promise<void> {
     if (this.softDelete) {
       await this.resolveDb(
         (db) =>

@@ -37,7 +37,7 @@ export class SubsidiesService {
     });
   }
 
-  async findById(id: string): Promise<Selectable<SubsidiesTable>> {
+  async findById(id: number): Promise<Selectable<SubsidiesTable>> {
     return this.subsidiesRepo.findByIdOrThrow(id);
   }
 
@@ -47,7 +47,7 @@ export class SubsidiesService {
     return subsidy;
   }
 
-  async update(id: string, dto: UpdateSubsidyDto): Promise<Selectable<SubsidiesTable>> {
+  async update(id: number, dto: UpdateSubsidyDto): Promise<Selectable<SubsidiesTable>> {
     const subsidy = await this.subsidiesRepo.update(id, { total_amount: dto.total_amount });
     if (!subsidy) throw new ResourceNotFoundException();
     return subsidy;
@@ -58,8 +58,8 @@ export class SubsidiesService {
   }
 
   async recordUsage(
-    subsidyId: string,
-    sessionId: string,
+    subsidyId: number,
+    sessionId: number,
     amount: number,
     currentUsedAmount: number,
     options?: WriteOptions,

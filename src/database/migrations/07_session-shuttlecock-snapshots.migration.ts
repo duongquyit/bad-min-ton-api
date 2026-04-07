@@ -3,11 +3,11 @@ import { Kysely, sql } from 'kysely';
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('session_shuttlecock_snapshots')
-    .addColumn('id', 'bigserial', (col) => col.primaryKey())
-    .addColumn('session_id', 'bigint', (col) =>
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('session_id', 'integer', (col) =>
       col.notNull().references('sessions.id'),
     )
-    .addColumn('shuttlecock_id', 'bigint')
+    .addColumn('shuttlecock_id', 'integer')
     .addColumn('shuttlecock_name_snapshot', 'varchar(255)')
     .addColumn('unit_price_snapshot', 'integer', (col) => col.notNull())
     .addColumn('quantity', 'integer', (col) => col.notNull())

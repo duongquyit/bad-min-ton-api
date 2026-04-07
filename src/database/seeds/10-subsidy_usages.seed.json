@@ -1,4 +1,15 @@
 [
-  { "id": 1, "subsidy_id": 3, "session_id": 1, "amount": 400000 },
-  { "id": 2, "subsidy_id": 2, "session_id": 2, "amount": 400000 }
+  { "id": 1,  "subsidy_id": 3, "session_id": 1,  "amount": 153848 },
+  { "id": 2,  "subsidy_id": 3, "session_id": 2,  "amount": 153846 },
+  { "id": 3,  "subsidy_id": 3, "session_id": 3,  "amount": 153846 },
+  { "id": 4,  "subsidy_id": 3, "session_id": 4,  "amount": 153846 },
+  { "id": 5,  "subsidy_id": 3, "session_id": 5,  "amount": 153846 },
+  { "id": 6,  "subsidy_id": 3, "session_id": 6,  "amount": 153846 },
+  { "id": 7,  "subsidy_id": 3, "session_id": 7,  "amount": 153846 },
+  { "id": 8,  "subsidy_id": 3, "session_id": 8,  "amount": 153846 },
+  { "id": 9,  "subsidy_id": 3, "session_id": 9,  "amount": 153846 },
+  { "id": 10, "subsidy_id": 3, "session_id": 10, "amount": 153846 },
+  { "id": 11, "subsidy_id": 3, "session_id": 11, "amount": 153846 },
+  { "id": 12, "subsidy_id": 3, "session_id": 12, "amount": 153846 },
+  { "id": 13, "subsidy_id": 3, "session_id": 13, "amount": 153840 }
 ]

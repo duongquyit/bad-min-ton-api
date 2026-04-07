@@ -1,20 +1,15 @@
 [
-  {
-    "id": 1,
-    "session_id": 1,
-    "shuttlecock_id": 1,
-    "shuttlecock_name_snapshot": "LêQuang 43",
-    "unit_price_snapshot": 270000,
-    "quantity": 2,
-    "total_amount": 540000
-  },
-  {
-    "id": 2,
-    "session_id": 2,
-    "shuttlecock_id": 2,
-    "shuttlecock_name_snapshot": "LêQuang 86",
-    "unit_price_snapshot": 290000,
-    "quantity": 3,
-    "total_amount": 870000
-  }
+  { "id": 1,  "session_id": 1,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 2,  "session_id": 2,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 3,  "session_id": 3,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 7, "total_amount": 175000 },
+  { "id": 4,  "session_id": 4,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 5,  "session_id": 5,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 3, "total_amount": 75000  },
+  { "id": 6,  "session_id": 6,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 3, "total_amount": 75000  },
+  { "id": 7,  "session_id": 7,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 3, "total_amount": 75000  },
+  { "id": 8,  "session_id": 8,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 9,  "session_id": 9,  "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 10, "session_id": 10, "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 11, "session_id": 11, "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 12, "session_id": 12, "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 },
+  { "id": 13, "session_id": 13, "shuttlecock_id": 1, "shuttlecock_name_snapshot": "LêQuang 43", "unit_price_snapshot": 25000, "quantity": 4, "total_amount": 100000 }
 ]

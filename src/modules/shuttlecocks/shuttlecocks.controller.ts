@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { ResponseHelper } from 'src/common/helpers/response.helper';
 import { CreateShuttlecockDto, ListShuttlecocksQueryDto, UpdateShuttlecockDto } from './shuttlecocks.dto';
 import { ShuttlecocksService } from './shuttlecocks.service';
@@ -20,19 +20,19 @@ export class ShuttlecocksController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     const shuttlecock = await this.shuttlecocksService.findById(id);
     return ResponseHelper.ok(shuttlecock);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateShuttlecockDto) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateShuttlecockDto) {
     const shuttlecock = await this.shuttlecocksService.update(id, dto);
     return ResponseHelper.ok(shuttlecock);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     await this.shuttlecocksService.remove(id);
     return ResponseHelper.noContent();
   }

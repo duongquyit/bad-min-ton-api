@@ -1,6 +1,11 @@
 import { Kysely, PostgresDialect } from 'kysely';
-import { Pool } from 'pg';
+import { Pool, types } from 'pg';
 import { ConfigService } from '@nestjs/config';
+
+// Return PostgreSQL `date` columns as plain 'YYYY-MM-DD' strings instead of
+// letting pg parse them into Date objects (which shifts the value when the
+// server timezone differs from UTC).
+types.setTypeParser(1082, (val) => val);
 
 export class Database {
   private static instance: Kysely<any> | null = null;

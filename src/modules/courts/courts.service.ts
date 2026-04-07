@@ -27,21 +27,21 @@ export class CourtsService {
     });
   }
 
-  async findById(id: string): Promise<Selectable<CourtsTable>> {
+  async findById(id: number): Promise<Selectable<CourtsTable>> {
     return this.courtsRepo.findByIdOrThrow(id);
   }
 
-  async findByIdOptional(id: string): Promise<Selectable<CourtsTable> | undefined> {
+  async findByIdOptional(id: number): Promise<Selectable<CourtsTable> | undefined> {
     return this.courtsRepo.findById(id);
   }
 
-  async update(id: string, dto: UpdateCourtDto): Promise<Selectable<CourtsTable>> {
+  async update(id: number, dto: UpdateCourtDto): Promise<Selectable<CourtsTable>> {
     const court = await this.courtsRepo.update(id, dto);
     if (!court) throw new ResourceNotFoundException();
     return court;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.courtsRepo.findByIdOrThrow(id);
     await this.courtsRepo.delete(id);
   }

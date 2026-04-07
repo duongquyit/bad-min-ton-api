@@ -47,6 +47,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
+    console.log(exception);
+
     const message = t(errorCode, lang);
 
     const body: ErrorResponse = {

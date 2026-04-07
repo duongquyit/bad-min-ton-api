@@ -3,9 +3,9 @@ import { Kysely, sql } from 'kysely';
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('sessions')
-    .addColumn('id', 'bigserial', (col) => col.primaryKey())
+    .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('session_date', 'date', (col) => col.notNull())
-    .addColumn('court_id', 'bigint', (col) => col.references('courts.id'))
+    .addColumn('court_id', 'integer', (col) => col.references('courts.id'))
     .addColumn('status', 'int2', (col) => col.notNull().defaultTo(1))
     .addColumn('duration_hours', 'numeric(4, 2)', (col) => col.notNull())
     .addColumn('is_scheduled', 'boolean', (col) => col.defaultTo(true))

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { ResponseHelper } from 'src/common/helpers/response.helper';
 import { CreateUserDto, ListUsersQueryDto, UpdateUserDto } from './users.dto';
 import { UsersService } from './users.service';
@@ -20,19 +20,19 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     const user = await this.usersService.findById(id);
     return ResponseHelper.ok(user);
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserDto) {
     const user = await this.usersService.update(id, dto);
     return ResponseHelper.ok(user);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     await this.usersService.remove(id);
     return ResponseHelper.noContent();
   }

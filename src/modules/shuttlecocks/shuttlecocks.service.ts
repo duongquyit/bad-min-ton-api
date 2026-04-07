@@ -28,17 +28,17 @@ export class ShuttlecocksService {
     });
   }
 
-  async findById(id: string): Promise<Selectable<ShuttlecocksTable>> {
+  async findById(id: number): Promise<Selectable<ShuttlecocksTable>> {
     return this.shuttlecocksRepo.findByIdOrThrow(id);
   }
 
-  async update(id: string, dto: UpdateShuttlecockDto): Promise<Selectable<ShuttlecocksTable>> {
+  async update(id: number, dto: UpdateShuttlecockDto): Promise<Selectable<ShuttlecocksTable>> {
     const shuttlecock = await this.shuttlecocksRepo.update(id, dto);
     if (!shuttlecock) throw new ResourceNotFoundException();
     return shuttlecock;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.shuttlecocksRepo.findByIdOrThrow(id);
     await this.shuttlecocksRepo.delete(id);
   }
