@@ -265,17 +265,26 @@ export class BaseRepository<Model> {
   async create(
     data: Insertable<Model>,
     options?: WriteOptions,
-  ): Promise<Selectable<Model>> {
-    const row = await this.resolveDb(
-      (db) =>
-        db
-          .insertInto(this.tableName)
-          .values(data as any)
-          .returningAll()
-          .executeTakeFirstOrThrow(),
-      options,
-    );
-    return row as Selectable<Model>;
+  ): Promise<Selectable<Model>>;
+  async create(
+    data: ReadonlyArray<Insertable<Model>>,
+    options?: WriteOptions,
+  ): Promise<Selectable<Model>[]>;
+  async create(
+    data: Insertable<Model> | ReadonlyArray<Insertable<Model>>,
+    options?: WriteOptions,
+  ): Promise<Selectable<Model> | Selectable<Model>[]> {
+    const rows = await this.resolveDb(
+        (db) => 
+          db
+            .insertInto(this.tableName)
+            .values(data as any)
+            .returningAll()
+            .execute(),
+        options,
+      );
+
+    return Array.isArray(data) ? rows as Selectable<Model>[] : rows[0] as Selectable<Model>;
   }
 
   async update(

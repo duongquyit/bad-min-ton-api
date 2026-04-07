@@ -142,16 +142,36 @@ export class SessionsService {
     }));
   }
 
-  async addParticipant(
+  async addParticipants(
     sessionId: number,
     dto: AddParticipantDto,
-  ): Promise<Selectable<SessionParticipantsTable>> {
+  ): Promise<Selectable<SessionParticipantsTable>[]> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertDraft(session);
 
-    const user = await this.usersService.findById(dto.user_id);
+    const [users, existingRecords] = await Promise.all([
+      Promise.all(dto.user_ids.map((userId) => this.usersService.findById(userId))),
+      this.participantsRepo.findManyIncludingDeleted(sessionId, dto.user_ids),
+    ]);
 
-    return this.participantsRepo.addParticipant(sessionId, dto.user_id, user.type);
+    const existingByUserId = new Map(existingRecords.map((r) => [r.user_id, r]));
+    const userTypeByUserId = new Map(dto.user_ids.map((userId, i) => [userId, users[i].type]));
+
+    const toRestore = existingRecords.filter((r) => r.deleted_at !== null);
+    const toCreateUserIds = dto.user_ids.filter((userId) => !existingByUserId.has(userId));
+
+    const [restored, created] = await Promise.all([
+      Promise.all(
+        toRestore.map((r) => this.participantsRepo.restore(r.id, userTypeByUserId.get(r.user_id)!)),
+      ),
+      this.participantsRepo.create(toCreateUserIds.map((userId) => ({
+        session_id: sessionId,
+        user_id: userId,
+        type_snapshot: userTypeByUserId.get(userId)!
+      })))
+    ]);
+
+    return [...restored, ...created];
   }
 
   async removeParticipant(sessionId: number, userId: number): Promise<void> {
@@ -170,20 +190,28 @@ export class SessionsService {
   async addShuttlecockUsage(
     sessionId: number,
     dto: AddShuttlecockUsageDto,
-  ): Promise<Selectable<SessionShuttlecockSnapshotsTable>> {
+  ): Promise<Selectable<SessionShuttlecockSnapshotsTable>[]> {
     const session = await this.sessionsRepo.findByIdOrThrow(sessionId);
     this.assertDraft(session);
 
-    const shuttlecock = await this.shuttlecocksService.findById(dto.shuttlecock_id);
+    const shuttlecocks = await Promise.all(
+      dto.items.map((item) => this.shuttlecocksService.findById(item.shuttlecock_id)),
+    );
 
-    return this.shuttlecockSnapshotsRepo.create({
-      session_id: sessionId,
-      shuttlecock_id: dto.shuttlecock_id,
-      shuttlecock_name_snapshot: shuttlecock.name,
-      unit_price_snapshot: shuttlecock.price,
-      quantity: dto.quantity,
-      total_amount: Math.round((shuttlecock.price / shuttlecock.quantity) * dto.quantity),
-    });
+    const shuttlecockById = new Map(shuttlecocks.map((s) => [s.id, s]));
+    const sessionShuttlecockSnapshots = dto.items.map((item) => {
+        const shuttlecock = shuttlecockById.get(item.shuttlecock_id)!;
+        return {
+          session_id: sessionId,
+          shuttlecock_id: item.shuttlecock_id,
+          shuttlecock_name_snapshot: shuttlecock.name,
+          unit_price_snapshot: shuttlecock.price,
+          quantity: item.quantity,
+          total_amount: Math.round((shuttlecock.price / shuttlecock.quantity) * item.quantity),
+        };
+      });
+
+    return await this.shuttlecockSnapshotsRepo.create(sessionShuttlecockSnapshots);
   }
 
   async updateShuttlecockUsage(

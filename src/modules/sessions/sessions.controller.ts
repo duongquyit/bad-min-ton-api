@@ -64,9 +64,9 @@ export class SessionsController {
   }
 
   @Post(':id/participants')
-  async addParticipant(@Param('id', ParseIntPipe) id: number, @Body() dto: AddParticipantDto) {
-    const participant = await this.sessionsService.addParticipant(id, dto);
-    return ResponseHelper.created(participant);
+  async addParticipants(@Param('id', ParseIntPipe) id: number, @Body() dto: AddParticipantDto) {
+    const participants = await this.sessionsService.addParticipants(id, dto);
+    return ResponseHelper.created(participants);
   }
 
   @Delete(':id/participants/:userId')
@@ -85,8 +85,8 @@ export class SessionsController {
 
   @Post(':id/shuttlecocks')
   async addShuttlecockUsage(@Param('id', ParseIntPipe) id: number, @Body() dto: AddShuttlecockUsageDto) {
-    const snapshot = await this.sessionsService.addShuttlecockUsage(id, dto);
-    return ResponseHelper.created(snapshot);
+    const snapshots = await this.sessionsService.addShuttlecockUsage(id, dto);
+    return ResponseHelper.created(snapshots);
   }
 
   @Patch(':id/shuttlecocks/:snapshotId')

@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsArray, IsDateString, IsInt, IsNumber, IsOptional, IsString, Max, Min, ValidateNested } from 'class-validator';
 import { PaginationQueryDto } from 'src/common/dto/pagination.dto';
 import { COST_STRATEGY, SESSION_STATUS } from './sessions.constants';
 
@@ -51,12 +51,13 @@ export class ListSessionsQueryDto extends PaginationQueryDto {
 }
 
 export class AddParticipantDto {
+  @IsArray()
   @Type(() => Number)
-  @IsInt()
-  user_id: number;
+  @IsInt({ each: true })
+  user_ids: number[];
 }
 
-export class AddShuttlecockUsageDto {
+export class ShuttlecockUsageItemDto {
   @Type(() => Number)
   @IsInt()
   shuttlecock_id: number;
@@ -64,6 +65,13 @@ export class AddShuttlecockUsageDto {
   @IsInt()
   @Min(1)
   quantity: number;
+}
+
+export class AddShuttlecockUsageDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ShuttlecockUsageItemDto)
+  items: ShuttlecockUsageItemDto[];
 }
 
 export class UpdateShuttlecockUsageDto {

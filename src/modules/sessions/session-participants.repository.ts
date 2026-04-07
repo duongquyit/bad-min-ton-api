@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Selectable } from 'kysely';
 import { BaseRepository } from 'src/database/base.repository';
-import { ResourceConflictException } from 'src/common/exceptions/app.exception';
 import { SessionParticipantsTable } from './sessions.model';
 
 @Injectable()
@@ -10,34 +9,22 @@ export class SessionParticipantsRepository extends BaseRepository<SessionPartici
     super('session_participants');
   }
 
-  async addParticipant(
-    sessionId: number,
-    userId: number,
-    typeSnapshot: number,
-  ): Promise<Selectable<SessionParticipantsTable>> {
-    // Check for any existing record (active or soft-deleted) to handle unique constraint
-    const existingParticipant = await this.db
+  async findManyIncludingDeleted(sessionId: number, userIds: number[]): Promise<Selectable<SessionParticipantsTable>[]> {
+    return this.db
       .selectFrom('session_participants')
       .selectAll()
       .where('session_id', '=', sessionId)
-      .where('user_id', '=', userId)
-      .executeTakeFirst();
+      .where('user_id', 'in', userIds)
+      .execute() as Promise<Selectable<SessionParticipantsTable>[]>;
+  }
 
-    if (existingParticipant) {
-      if (!existingParticipant.deleted_at) {
-        throw new ResourceConflictException();
-      }
-      // Restore soft-deleted participant
-      const restoredParticipant = await this.db
-        .updateTable('session_participants')
-        .set({ deleted_at: null, type_snapshot: typeSnapshot, updated_at: new Date() })
-        .where('id', '=', existingParticipant.id)
-        .returningAll()
-        .executeTakeFirstOrThrow();
-      return restoredParticipant as Selectable<SessionParticipantsTable>;
-    }
-
-    return this.create({ session_id: sessionId, user_id: userId, type_snapshot: typeSnapshot });
+  async restore(id: number, typeSnapshot: number): Promise<Selectable<SessionParticipantsTable>> {
+    return this.db
+      .updateTable('session_participants')
+      .set({ deleted_at: null, type_snapshot: typeSnapshot, updated_at: new Date() })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirstOrThrow() as Promise<Selectable<SessionParticipantsTable>>;
   }
 
   async removeParticipant(sessionId: number, userId: number): Promise<void> {
