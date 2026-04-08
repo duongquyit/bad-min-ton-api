@@ -13,8 +13,8 @@ import { ShuttlecocksService } from 'src/modules/shuttlecocks/shuttlecocks.servi
 import { CalculationEngine, CostStrategy, UserCostBreakdown } from 'src/core/calculation-engine/calculation-engine';
 import { SessionParticipantsRepository } from './session-participants.repository';
 import { SessionShuttlecockSnapshotsRepository } from './session-shuttlecock-snapshots.repository';
-import { SessionSnapshotsRepository } from './session-snapshots.repository';
-import { SessionUserSnapshotsRepository } from './session-user-snapshots.repository';
+import { SessionSnapshotsRepository, SessionSummaryRow, MonthlyExpenseRow } from './session-snapshots.repository';
+import { SessionUserSnapshotsRepository, MonthlyIncomeRow } from './session-user-snapshots.repository';
 import { SESSION_STATUS } from './sessions.constants';
 import {
   AddParticipantDto,
@@ -392,6 +392,24 @@ export class SessionsService {
     });
     if (!updatedUserSnapshot) throw new ResourceNotFoundException();
     return updatedUserSnapshot;
+  }
+
+  // ─── Reports ─────────────────────────────────────────────────────────────────
+
+  async getReportSummary(from: string, to: string): Promise<SessionSummaryRow> {
+    return this.sessionSnapshotsRepo.summarizeByDateRange(from, to);
+  }
+
+  async getReportTotalRevenue(from: string, to: string): Promise<string> {
+    return this.sessionUserSnapshotsRepo.sumRevenue(from, to);
+  }
+
+  async getReportMonthlyExpenses(from: string, to: string): Promise<MonthlyExpenseRow[]> {
+    return this.sessionSnapshotsRepo.groupExpensesByMonth(from, to);
+  }
+
+  async getReportMonthlyIncome(from: string, to: string): Promise<MonthlyIncomeRow[]> {
+    return this.sessionUserSnapshotsRepo.groupIncomeByMonth(from, to);
   }
 
   // ─── Private guards ──────────────────────────────────────────────────────────

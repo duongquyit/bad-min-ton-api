@@ -23,5 +23,6 @@ import { SessionsService } from './sessions.service';
     SessionSnapshotsRepository,
     SessionUserSnapshotsRepository,
   ],
+  exports: [SessionsService],
 })
 export class SessionsModule {}

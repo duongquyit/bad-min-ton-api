@@ -15,6 +15,7 @@ import { ShuttlecocksModule } from './shuttlecocks/shuttlecocks.module';
 import { SubsidiesModule } from './subsidies/subsidies.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { SessionScheduleSettingsModule } from './session-schedule-settings/session-schedule-settings.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { SessionScheduleSettingsModule } from './session-schedule-settings/sessi
     SubsidiesModule,
     SessionsModule,
     SessionScheduleSettingsModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [

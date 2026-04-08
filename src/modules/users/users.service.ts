@@ -4,7 +4,7 @@ import { ResourceNotFoundException } from 'src/common/exceptions/app.exception';
 import { PaginationHelper, PaginationMeta } from 'src/common/helpers/pagination.helper';
 import { CreateUserDto, ListUsersQueryDto, UpdateUserDto } from './users.dto';
 import { UsersTable } from './users.model';
-import { UsersRepository } from './users.repository';
+import { MemberBreakdownRow, UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
@@ -46,5 +46,9 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.usersRepo.findByIdOrThrow(id);
     await this.usersRepo.delete(id);
+  }
+
+  async getMemberBreakdown(from: string, to: string): Promise<MemberBreakdownRow[]> {
+    return this.usersRepo.breakdownByDateRange(from, to);
   }
 }
