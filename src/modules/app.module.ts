@@ -14,6 +14,7 @@ import { CourtsModule } from './courts/courts.module';
 import { ShuttlecocksModule } from './shuttlecocks/shuttlecocks.module';
 import { SubsidiesModule } from './subsidies/subsidies.module';
 import { SessionsModule } from './sessions/sessions.module';
+import { SessionScheduleSettingsModule } from './session-schedule-settings/session-schedule-settings.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { SessionsModule } from './sessions/sessions.module';
     ShuttlecocksModule,
     SubsidiesModule,
     SessionsModule,
+    SessionScheduleSettingsModule,
   ],
   controllers: [AppController],
   providers: [

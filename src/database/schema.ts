@@ -139,6 +139,21 @@ export interface SessionUserSnapshotsTable {
 }
 
 // =====================================================
+// SESSION SCHEDULE SETTINGS
+// session_day_of_week: ISO weekday array (1=Mon … 7=Sun)
+// =====================================================
+export interface SessionScheduleSettingsTable {
+  id: Generated<number>;
+  name: string | null;
+  session_day_of_week: number[];
+  total_session_of_month: DefaultableNumber;
+  is_active: DefaultableBoolean;
+  created_at: Generated<Date>;
+  updated_at: UpdateableTimestamp;
+  deleted_at: SoftDeleteTimestamp;
+}
+
+// =====================================================
 // SUBSIDIES
 // =====================================================
 export interface SubsidiesTable {
@@ -171,6 +186,7 @@ export interface DatabaseSchema {
   session_shuttlecock_snapshots: SessionShuttlecockSnapshotsTable;
   session_snapshots: SessionSnapshotsTable;
   session_user_snapshots: SessionUserSnapshotsTable;
+  session_schedule_settings: SessionScheduleSettingsTable;
   subsidies: SubsidiesTable;
   subsidy_usages: SubsidyUsagesTable;
 }

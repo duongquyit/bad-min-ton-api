@@ -11,7 +11,7 @@ export class SessionParticipantsRepository extends BaseRepository<SessionPartici
 
   async findManyIncludingDeleted(sessionId: number, userIds: number[]): Promise<Selectable<SessionParticipantsTable>[]> {
     return this.db
-      .selectFrom('session_participants')
+      .selectFrom(this.tableName)
       .selectAll()
       .where('session_id', '=', sessionId)
       .where('user_id', 'in', userIds)
@@ -20,7 +20,7 @@ export class SessionParticipantsRepository extends BaseRepository<SessionPartici
 
   async restore(id: number, typeSnapshot: number): Promise<Selectable<SessionParticipantsTable>> {
     return this.db
-      .updateTable('session_participants')
+      .updateTable(this.tableName)
       .set({ deleted_at: null, type_snapshot: typeSnapshot, updated_at: new Date() })
       .where('id', '=', id)
       .returningAll()
@@ -29,7 +29,7 @@ export class SessionParticipantsRepository extends BaseRepository<SessionPartici
 
   async removeParticipant(sessionId: number, userId: number): Promise<void> {
     await this.db
-      .updateTable('session_participants')
+      .updateTable(this.tableName)
       .set({ deleted_at: new Date() })
       .where('session_id', '=', sessionId)
       .where('user_id', '=', userId)

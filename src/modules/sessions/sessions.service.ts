@@ -8,6 +8,7 @@ import { PaginationHelper, PaginationMeta } from 'src/common/helpers/pagination.
 import { CourtsService } from 'src/modules/courts/courts.service';
 import { SubsidiesService } from 'src/modules/subsidies/subsidies.service';
 import { UsersService } from 'src/modules/users/users.service';
+import { SessionScheduleSettingsService } from 'src/modules/session-schedule-settings/session-schedule-settings.service';
 import { ShuttlecocksService } from 'src/modules/shuttlecocks/shuttlecocks.service';
 import { CalculationEngine, CostStrategy, UserCostBreakdown } from 'src/core/calculation-engine/calculation-engine';
 import { SessionParticipantsRepository } from './session-participants.repository';
@@ -45,6 +46,7 @@ export class SessionsService {
     private readonly subsidiesService: SubsidiesService,
     private readonly usersService: UsersService,
     private readonly shuttlecocksService: ShuttlecocksService,
+    private readonly scheduleSettingsService: SessionScheduleSettingsService,
   ) {}
 
   // ─── Sessions CRUD ──────────────────────────────────────────────────────────
@@ -205,7 +207,7 @@ export class SessionsService {
           session_id: sessionId,
           shuttlecock_id: item.shuttlecock_id,
           shuttlecock_name_snapshot: shuttlecock.name,
-          unit_price_snapshot: shuttlecock.price,
+          unit_price_snapshot: Math.round(shuttlecock.price / shuttlecock.quantity),
           quantity: item.quantity,
           total_amount: Math.round((shuttlecock.price / shuttlecock.quantity) * item.quantity),
         };
@@ -227,7 +229,7 @@ export class SessionsService {
 
     const updatedUsage = await this.shuttlecockSnapshotsRepo.update(snapshotId, {
       quantity: dto.quantity,
-      total_amount: Math.round((shuttlecockUsage.unit_price_snapshot / shuttlecockUsage.quantity) * dto.quantity),
+      total_amount: Math.round(shuttlecockUsage.unit_price_snapshot * dto.quantity),
     });
     if (!updatedUsage) throw new ResourceNotFoundException();
     return updatedUsage;
@@ -261,8 +263,17 @@ export class SessionsService {
     const shuttlecockTotal = shuttlecockSnapshots.reduce((sum, s) => sum + s.total_amount, 0);
     const sessionMonth = toMonthString(session.session_date);
 
-    const subsidy = await this.subsidiesService.findByMonthOptional(sessionMonth);
-    const subsidyAvailable = subsidy ? subsidy.total_amount - subsidy.used_amount : 0;
+    const [subsidy, activeSchedule] = await Promise.all([
+      this.subsidiesService.findByMonthOptional(sessionMonth),
+      this.scheduleSettingsService.findActiveForMonth(sessionMonth),
+    ]);
+
+    const subsidyPerSession =
+      subsidy && activeSchedule && activeSchedule.total_session_of_month > 0
+        ? Math.floor(subsidy.total_amount / activeSchedule.total_session_of_month)
+        : 0;
+    const subsidyRemaining = subsidy ? subsidy.total_amount - subsidy.used_amount : 0;
+    const subsidyAvailable = Math.min(subsidyPerSession, subsidyRemaining);
 
     const calculation = CalculationEngine.calculate({
       courtPrice: courtRentalCost,
